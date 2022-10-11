@@ -4,18 +4,20 @@ import plotly.express as px
 import seaborn as sn
 import streamlit as st
 from datetime import date,datetime
-from prj_utils import cleanData, convert_df, defineKeys, fetchData, filter
+from prj_utils import cleanData, convert_df2020, defineKeys, fetchData, filter, filterFeature, yearAnalysis
 from streamlit_folium import st_folium
 import folium
     
 
 
 
-year = 2020
 #----------------------------
-df = fetchData(year)
-df = cleanData(df)
-keys = defineKeys(df)
+df2019 = fetchData(2019)
+df2019 = cleanData(df2019)
+
+df2020 = fetchData(2020)
+df2020 = cleanData(df2020)
+keys = defineKeys(df2020)
 
 #----------------------------
 
@@ -30,8 +32,8 @@ with st.sidebar:
         st.subheader("Choose your preference:")
         dateMutation = st.slider(
             "Select a range for your research",
-            datetime(year,1,1),datetime(year,12,31),
-            value=(datetime(year,1,1), datetime(year,5,1)),
+            datetime(2020,1,1),datetime(2020,12,31),
+            value=(datetime(2020,1,1), datetime(2020,5,1)),
         )
         natureMutation = st.multiselect(
             'Choose the types of transactions',
@@ -66,41 +68,14 @@ with st.sidebar:
             value=(keys["nombre_pieces_principales"][0], keys["nombre_pieces_principales"][1]),
             step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0]))
         )
-st.write(df.head(5))
+st.write(df2020.head(5))
 
 
 if option == '2019 analysis':
-    year = 2019
+    yearAnalysis(df2019)
 elif option == '2020 analysis':
-    year = 2020
+    yearAnalysis(df2020)
 elif option == 'Filter feature':
-    year = 2020
-    st.write("# Filter feature")
-    limit = 300 # Limit of properties per pages
-    filtered = filter(df,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
-    page = st.select_slider(
-        'Select the page',
-        options = range(int(len(df)/limit)),
-        value = 0
-    )
-    m = folium.Map(location=[48.856614,2.3522219]) # Paris location
-    colors = {"Maison":'lightgreen',"Appartement":'lightblue',"Dépendance":'red',"Local industriel. commercial ou assimilé":'orange'}
-    st.write(colors)
-    for ind, lat, lon, typ, val in filtered[["latitude","longitude","type_local","valeur_fonciere"]][limit*page:limit*(page+1)].itertuples():     
-        folium.Marker(
-            [lat,lon],
-            icon=folium.Icon(icon="glyphicon-map-marker",color=colors[typ]),
-            tooltip = "{} €".format(val)
-        ).add_to(m)
-    st_data = st_folium(m, width = 800,height=600)
-    
-    csv = convert_df(filtered)
-
-    st.download_button(
-        label="Download data as CSV",
-        data=csv,
-        file_name='properties.csv',
-        mime='text/csv',
-    )
+    filterFeature(df2020)
 
     

@@ -4,6 +4,7 @@ import plotly.express as px
 import seaborn as sn
 import streamlit as st
 import folium
+from streamlit_folium import st_folium
 from datetime import datetime
 
 links = {
@@ -54,8 +55,41 @@ def filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,n
     return data
 
 @st.cache(suppress_st_warning=True)
-def convert_df(df):
-    return df.to_csv().encode('utf-8')
+def convert_df(data):
+    return data.to_csv().encode('utf-8')
+
+
+@st.cache(suppress_st_warning=True)
+def yearAnalysis(data):
+  	return ""
+
+def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces):
+	st.write("# Filter feature for the year 2020")
+	limit = 300 # Limit of properties per pages
+	filtered = filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
+	page = st.select_slider(
+        'Select the page',
+        options = range(int(len(data)/limit)),
+        value = 0
+    )
+	m = folium.Map(location=[48.856614,2.3522219]) # Paris location
+	colors = {"Maison":'lightgreen',"Appartement":'lightblue',"Dépendance":'red',"Local industriel. commercial ou assimilé":'orange'}
+	st.write(colors)
+	for ind, lat, lon, typ, val in filtered[["latitude","longitude","type_local","valeur_fonciere"]][limit*page:limit*(page+1)].itertuples():     
+		folium.Marker(
+            [lat,lon],
+            icon=folium.Icon(icon="glyphicon-map-marker",color=colors[typ]),
+            tooltip = "{} €".format(val)
+        ).add_to(m)
+	
+	st_data = st_folium(m, width = 800,height=600)
+	st.download_button(
+        label="Download data as CSV",
+        data=convert_df(filtered),
+        file_name='properties.csv',
+        mime='text/csv',
+    )
+	
 
 def add_categorical_legend(folium_map, title, color_by_label):
     
