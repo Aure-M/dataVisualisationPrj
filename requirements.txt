@@ -1,6 +1,5 @@
 pandas 
 matplotlib
-plotly
 streamlit
 datetime
 streamlit_folium

@@ -1,7 +1,6 @@
 import pandas as pd 
 import matplotlib.pyplot as plt
 import plotly.express as px
-import seaborn as sn
 import streamlit as st
 import folium
 from streamlit_folium import st_folium
