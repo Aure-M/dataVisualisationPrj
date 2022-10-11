@@ -31,10 +31,10 @@ def defineKeys(data):
         "nature_mutation": list(data["nature_mutation"].value_counts().index),
         "valeur_fonciere": [int(data["valeur_fonciere"].min()), int(data["valeur_fonciere"].max())],
         "nom_commune": list(data["nom_commune"].value_counts().index),
-        "nombre_lots": [data["nombre_lots"].min(),data["nombre_lots"].max()],
+        "nombre_lots": [int(data["nombre_lots"].min()),int(data["nombre_lots"].max())],
         "type_local": list(data["type_local"].value_counts().index),
         "surface_reelle_bati": [int(data["surface_reelle_bati"].min()), int(data["surface_reelle_bati"].max())],
-        "nombre_pieces_principales": [data["nombre_pieces_principales"].min(),data["nombre_pieces_principales"].max()],
+        "nombre_pieces_principales": [int(data["nombre_pieces_principales"].min()),int(data["nombre_pieces_principales"].max())],
         "surface_terrain": [int(data["surface_terrain"].min()), int(data["surface_terrain"].max())]
     }
 
