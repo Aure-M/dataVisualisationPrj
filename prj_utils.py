@@ -5,7 +5,10 @@ import seaborn as sn
 import streamlit as st
 import folium
 from streamlit_folium import st_folium
+import bokeh.plotting as bk
+import plotly.express as px
 from datetime import datetime
+
 
 links = {
     2020:"https://drive.google.com/u/0/uc?id=1-3aYJTGnwPDh8K0vIPXNuoGg4plRk0sb&export=download&confirm=t&uuid=f90aed2b-688d-4fa2-be31-316fbf3ee936",
@@ -15,6 +18,12 @@ links = {
 @st.cache(suppress_st_warning=True)
 def fetchData(year = 2020):
     data = pd.read_csv(links[2020])
+    return data
+
+
+@st.cache(suppress_st_warning=True)
+def fetchData(year = 2020):
+    data = pd.read_csv("./sample2.csv")
     return data
 
 
@@ -58,19 +67,82 @@ def filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,n
 def convert_df(data):
     return data.to_csv().encode('utf-8')
 
+
 def repartition_communes_BAR(data):
-  fig = plt.figure()
-  répartition_communes = data["nom_commune"].value_counts().sort_values(axis=0, ascending=False,)
-  top20_communes = répartition_communes.head(20)
-  top20_communes.plot(kind = "bar")
-  st.pyplot(fig)
-
-
-@st.cache(suppress_st_warning=True)
-def yearAnalysis(data):
-	st.write("## Cities ranking based on the number of real estate operations")
-	repartition_communes_BAR(data)
+	#fig = plt.figure()
+	répartition_communes = data["nom_commune"].value_counts().sort_values(axis=0, ascending=False,)
+	top20_communes = répartition_communes.head(20)
 	
+	fig = bk.figure(x_range=list(top20_communes.index), height=250, title="Cities",
+			toolbar_location=None, tools="", plot_width=600, plot_height=500)
+
+	fig.vbar(x=top20_communes.index, top=top20_communes, width=0.9)
+
+	fig.xgrid.grid_line_color = None
+	fig.xaxis.major_label_orientation = 1.2
+	#top20_communes.plot(kind = "bar")
+	st.bokeh_chart(fig, use_container_width=True)
+	return top20_communes.index[:2]
+
+def repartission_TypeLocal_PIE(data,city):
+	fig = plt.figure(figsize=(10,10))
+	colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#fffc52']
+	repartition = []
+	explode = []
+	repartition = data["type_local"].value_counts()
+	for i in range(len(repartition)):
+		explode.append(0.05)
+
+	plt.pie(repartition, labels=repartition.index, explode=explode, colors= colors, startangle=65, autopct='%1.1f%%',shadow='True')
+	plt.title(label= 'Distribution of the type_local variable at '+city)
+	plt.legend()
+	st.pyplot(fig)
+
+def repartission_Mutation_PIE(data,city):
+	fig = plt.figure(figsize=(10,10))
+	colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#fffc52',"#da70d6"]
+	repartition = []
+	explode = []
+	repartition = data[data["nom_commune"] == city]["nature_mutation"].value_counts()
+	for i in range(len(repartition)):
+		explode.append(0.05)
+	plt.pie(repartition.to_numpy(), explode=explode, colors= colors, startangle=65, autopct='%1.1f%%',shadow='True')
+	plt.title(label= 'Répartition des mutations à '+city)
+	plt.legend(labels = repartition.index)
+	st.pyplot(fig)
+
+def scatterPlot(data):
+ 
+	plot = px.scatter(data, x="surface_terrain", y="valeur_fonciere", color="type_local")
+	st.plotly_chart(plot, use_container_width=True)
+ 
+
+def yearAnalysis(data,selected=None,showMap=False):
+	st.write("# General analysis on the dataset")
+	st.write("## Cities ranking based on the number of real estate operations")
+	cities = repartition_communes_BAR(data)
+	cities = list(cities)
+	st.write("---")
+	for city in cities:
+		st.write("## Let's study ",city)
+		col1, col2 = st.columns(2)
+		with col1:
+			st.caption('Distribution of the property at '+city)
+			repartission_TypeLocal_PIE(data[data["nom_commune"]==city],city)
+		with col2:
+			st.caption('Distribution of the type of mutation at '+city)
+			repartission_Mutation_PIE(data,city)
+	
+	st.write("---")
+	st.write("# Focus on ", selected)
+	st.write("### Relation between the lands value and their area")
+	focus = data[data["nom_commune"]==selected]
+	scatterPlot(focus)
+	if showMap:
+		st.map(focus[["latitude","longitude"]])
+		
+
+
 def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces):
 	st.write("# Filter feature for the year 2020")
 	limit = 300 # Limit of properties per pages
@@ -98,3 +170,4 @@ def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,sur
         mime='text/csv',
     )
 	
+

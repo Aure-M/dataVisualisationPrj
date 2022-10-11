@@ -1,9 +1,6 @@
 import pandas as pd 
-import matplotlib.pyplot as plt
-import plotly.express as px
-import seaborn as sn
 import streamlit as st
-from datetime import date,datetime
+from datetime import datetime
 from prj_utils import cleanData, defineKeys, fetchData, filterFeature, yearAnalysis
     
 
@@ -66,13 +63,22 @@ with st.sidebar:
             value=(keys["nombre_pieces_principales"][0], keys["nombre_pieces_principales"][1]),
             step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0]))
         )
-
+    elif option == '2019 analysis':
+        selected = st.selectbox(
+            'Choose the municipality that you interested in:',
+            tuple(df2019["nom_commune"].value_counts().index)
+        )
+        showMap = st.checkbox("Should we show the map ?")
+    else :
+        selected = st.selectbox(
+            'Choose the municipality that you interested in:',
+            tuple(df2020["nom_commune"].value_counts().index)
+        )
+        showMap = st.checkbox("Should we show the map ?")
 
 if option == '2019 analysis':
-    yearAnalysis(df2019)
+    yearAnalysis(df2019,selected=selected,showMap=showMap)
 elif option == '2020 analysis':
-    yearAnalysis(df2020)
+    yearAnalysis(df2020,selected=selected,showMap=showMap)
 elif option == 'Filter feature':
     filterFeature(df2020,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
-
-    

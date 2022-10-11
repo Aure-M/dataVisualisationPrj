@@ -1,8 +1,9 @@
 pandas 
 matplotlib
 plotly
-seaborn
 streamlit
 datetime
 streamlit_folium
 folium
+bokeh
+plotly
