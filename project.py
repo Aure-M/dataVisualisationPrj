@@ -64,7 +64,7 @@ with st.sidebar:
             "Number of main rooms : ",
             keys["nombre_pieces_principales"][0],keys["nombre_pieces_principales"][1],
             value=(keys["nombre_pieces_principales"][0], keys["nombre_pieces_principales"][1]),
-            step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0])/50)
+            step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0]))
         )
 st.write(keys)
 if option == 'Filter feature':
