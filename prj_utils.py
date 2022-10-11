@@ -21,12 +21,6 @@ def fetchData(year = 2020):
 
 
 @st.cache(suppress_st_warning=True)
-def fetchData(year = 2020):
-    data = pd.read_csv("./sample2.csv")
-    return data
-
-
-@st.cache(suppress_st_warning=True)
 def cleanData(data):
     if data["date_mutation"].dtype==type(object):
         data["date_mutation"] = [datetime.strptime(str(i), '%Y-%m-%d') for i in data["date_mutation"]]
