@@ -4,9 +4,7 @@ import plotly.express as px
 import seaborn as sn
 import streamlit as st
 from datetime import date,datetime
-from prj_utils import cleanData, convert_df2020, defineKeys, fetchData, filter, filterFeature, yearAnalysis
-from streamlit_folium import st_folium
-import folium
+from prj_utils import cleanData, defineKeys, fetchData, filterFeature, yearAnalysis
     
 
 
