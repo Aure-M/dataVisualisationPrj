@@ -29,7 +29,7 @@ def cleanData(data):
 def defineKeys(data):
     return {
         "nature_mutation": list(data["nature_mutation"].value_counts().index),
-        "valeur_fonciere": [data["valeur_fonciere"].min(), data["valeur_fonciere"].max()],
+        "valeur_fonciere": [int(data["valeur_fonciere"].min()), int(data["valeur_fonciere"].max())],
         "nom_commune": list(data["nom_commune"].value_counts().index),
         "nombre_lots": [data["nombre_lots"].min(),data["nombre_lots"].max()],
         "type_local": list(data["type_local"].value_counts().index),
