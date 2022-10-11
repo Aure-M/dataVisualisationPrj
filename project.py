@@ -42,7 +42,7 @@ with st.sidebar:
             "Lands value :",
             keys["valeur_fonciere"][0],keys["valeur_fonciere"][1],
             value=(keys["valeur_fonciere"][0], keys["valeur_fonciere"][1]),
-            step = (keys["valeur_fonciere"][1]-keys["valeur_fonciere"][0])/50
+            step = int((keys["valeur_fonciere"][1]-keys["valeur_fonciere"][0])/50)
         ) 
         commune = st.multiselect(
             'Choose the municipalities that you interested in:',
