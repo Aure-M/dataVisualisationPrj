@@ -92,7 +92,7 @@ if option == 'Filter feature':
     st.download_button(
         label="Download data as CSV",
         data=csv,
-        file_name='large_df.csv',
+        file_name='properties.csv',
         mime='text/csv',
     )
 
