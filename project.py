@@ -11,7 +11,7 @@ import folium
 
 
 
-year = 2017
+year = 2020
 #----------------------------
 df = fetchData(year)
 df = cleanData(df)
@@ -24,7 +24,7 @@ keys = defineKeys(df)
 with st.sidebar:
     option = st.selectbox(
     '',
-    ('2021 analysis', '2020 analysis', 'Filter feature'))
+    ('2019 analysis', '2020 analysis', 'Filter feature'))
 
     if option == 'Filter feature':
         st.subheader("Choose your preference:")
@@ -67,7 +67,14 @@ with st.sidebar:
             step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0]))
         )
 st.write(df.head(5))
-if option == 'Filter feature':
+
+
+if option == '2019 analysis':
+    year = 2019
+elif option == '2020 analysis':
+    year = 2020
+elif option == 'Filter feature':
+    year = 2020
     st.write("# Filter feature")
     limit = 300 # Limit of properties per pages
     filtered = filter(df,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
