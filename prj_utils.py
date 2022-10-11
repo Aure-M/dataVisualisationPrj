@@ -7,9 +7,8 @@ import folium
 from datetime import datetime
 
 links = {
-    2021:"https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20220408-143516/valeursfoncieres-2021.txt",
-    2020:"https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20220408-143240/valeursfoncieres-2020.txt",
-    2019:"https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20220408-142854/valeursfoncieres-2019.txt"
+    2020:"https://drive.google.com/u/0/uc?id=1-3aYJTGnwPDh8K0vIPXNuoGg4plRk0sb&export=download&confirm=t&uuid=f90aed2b-688d-4fa2-be31-316fbf3ee936",
+    2019:"https://drive.google.com/u/0/uc?id=16B0R6ZfzpaaGpzTAl0vncB7WN5vWjz_K&export=download&confirm=t&uuid=f90aed2b-688d-4fa2-be31-316fbf3ee936"
 }
 
 @st.cache(suppress_st_warning=True)
