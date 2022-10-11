@@ -74,6 +74,6 @@ if option == '2019 analysis':
 elif option == '2020 analysis':
     yearAnalysis(df2020)
 elif option == 'Filter feature':
-    filterFeature(df2020)
+    filterFeature(df2020,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
 
     
