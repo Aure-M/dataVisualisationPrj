@@ -58,11 +58,19 @@ def filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,n
 def convert_df(data):
     return data.to_csv().encode('utf-8')
 
+def repartition_communes_BAR(data):
+  fig = plt.figure()
+  répartition_communes = data["nom_commune"].value_counts().sort_values(axis=0, ascending=False,)
+  top20_communes = répartition_communes.head(20)
+  top20_communes.plot(kind = "bar")
+  st.pyplot(fig)
+
 
 @st.cache(suppress_st_warning=True)
 def yearAnalysis(data):
-  	return ""
-
+	st.write("## Cities ranking based on the number of real estate operations")
+	repartition_communes_BAR(data)
+	
 def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces):
 	st.write("# Filter feature for the year 2020")
 	limit = 300 # Limit of properties per pages
@@ -90,99 +98,3 @@ def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,sur
         mime='text/csv',
     )
 	
-
-def add_categorical_legend(folium_map, title, color_by_label):
-    
-    legend_categories = ""     
-    for label, color in color_by_label.items():
-        legend_categories += f"<li><span style='background:{color}'></span>{label}</li>"
-        
-    legend_html = f"""
-    <div id='maplegend' class='maplegend'>
-      <div class='legend-title'>{title}</div>
-      <div class='legend-scale'>
-        <ul class='legend-labels'>
-        {legend_categories}
-        </ul>
-      </div>
-    </div>
-    """
-    script = f"""
-        <script type="text/javascript">
-        var oneTimeExecution = (function() {{
-                    var executed = false;
-                    return function() {{
-                        if (!executed) {{
-                             var checkExist = setInterval(function() {{
-                                       if ((document.getElementsByClassName('leaflet-top leaflet-right').length) || (!executed)) {{
-                                          document.getElementsByClassName('leaflet-top leaflet-right')[0].style.display = "flex"
-                                          document.getElementsByClassName('leaflet-top leaflet-right')[0].style.flexDirection = "column"
-                                          document.getElementsByClassName('leaflet-top leaflet-right')[0].innerHTML += `{legend_html}`;
-                                          clearInterval(checkExist);
-                                          executed = true;
-                                       }}
-                                    }}, 100);
-                        }}
-                    }};
-                }})();
-        oneTimeExecution()
-        </script>
-      """
-   
-
-    css = """
-
-    <style type='text/css'>
-      .maplegend {
-        z-index:9999;
-        float:right;
-        background-color: rgba(255, 255, 255, 1);
-        border-radius: 5px;
-        border: 2px solid #bbb;
-        padding: 10px;
-        font-size:12px;
-        positon: relative;
-      }
-      .maplegend .legend-title {
-        text-align: left;
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 90%;
-        }
-      .maplegend .legend-scale ul {
-        margin: 0;
-        margin-bottom: 5px;
-        padding: 0;
-        float: left;
-        list-style: none;
-        }
-      .maplegend .legend-scale ul li {
-        font-size: 80%;
-        list-style: none;
-        margin-left: 0;
-        line-height: 18px;
-        margin-bottom: 2px;
-        }
-      .maplegend ul.legend-labels li span {
-        display: block;
-        float: left;
-        height: 16px;
-        width: 30px;
-        margin-right: 5px;
-        margin-left: 0;
-        border: 0px solid #ccc;
-        }
-      .maplegend .legend-source {
-        font-size: 80%;
-        color: #777;
-        clear: both;
-        }
-      .maplegend a {
-        color: #777;
-        }
-    </style>
-    """
-
-    folium_map.get_root().header.add_child(folium.Element(script + css))
-
-    return folium_map

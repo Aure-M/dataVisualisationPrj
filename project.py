@@ -66,7 +66,6 @@ with st.sidebar:
             value=(keys["nombre_pieces_principales"][0], keys["nombre_pieces_principales"][1]),
             step = int((keys["nombre_pieces_principales"][1]-keys["nombre_pieces_principales"][0]))
         )
-st.write(df2020.head(5))
 
 
 if option == '2019 analysis':
