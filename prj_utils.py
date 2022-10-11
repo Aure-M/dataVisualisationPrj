@@ -33,9 +33,9 @@ def defineKeys(data):
         "nom_commune": list(data["nom_commune"].value_counts().index),
         "nombre_lots": [data["nombre_lots"].min(),data["nombre_lots"].max()],
         "type_local": list(data["type_local"].value_counts().index),
-        "surface_reelle_bati": [data["surface_reelle_bati"].min(), data["surface_reelle_bati"].max()],
+        "surface_reelle_bati": [int(data["surface_reelle_bati"].min()), int(data["surface_reelle_bati"].max())],
         "nombre_pieces_principales": [data["nombre_pieces_principales"].min(),data["nombre_pieces_principales"].max()],
-        "surface_terrain": [data["surface_terrain"].min(), data["surface_terrain"].max()]
+        "surface_terrain": [int(data["surface_terrain"].min()), int(data["surface_terrain"].max())]
     }
 
 @st.cache(suppress_st_warning=True)

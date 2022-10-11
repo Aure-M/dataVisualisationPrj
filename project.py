@@ -58,7 +58,7 @@ with st.sidebar:
             "Lands surface :",
             keys["surface_terrain"][0],keys["surface_terrain"][1],
             value=(keys["surface_terrain"][0], keys["surface_terrain"][1]),
-            step = (keys["surface_terrain"][1]-keys["surface_terrain"][0])/50
+            step = int((keys["surface_terrain"][1]-keys["surface_terrain"][0])/50)
         )
         nbrePieces = st.slider(
             "Number of main rooms : ",
