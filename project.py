@@ -69,16 +69,16 @@ with st.sidebar:
             tuple(df2019["nom_commune"].value_counts().index)
         )
         showMap = st.checkbox("Should we show the map ?")
-    """ else :
+    else :
         selected = st.selectbox(
             'Choose the municipality that you interested in:',
             tuple(df2020["nom_commune"].value_counts().index)
         )
-        showMap = st.checkbox("Should we show the map ?") """
+        showMap = st.checkbox("Should we show the map ?")
 
 if option == '2019 analysis':
     yearAnalysis(df2019,selected=selected,showMap=showMap)
 elif option == '2020 analysis':
-    yearAnalysis(df2019,selected=selected,showMap=showMap)
+    yearAnalysis(df2020,selected=selected,showMap=showMap)
 elif option == 'Filter feature':
     filterFeature(df2020,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
