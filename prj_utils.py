@@ -19,7 +19,7 @@ links = {
     2019:"./df2019.csv"
 }
 @st.cache(suppress_st_warning=True)
-def fetchData(year):
+def fetchData():
     data2019 = pd.read_csv("./df2019.csv",low_memory=False)
     data2020 = pd.read_csv("./df2020.csv",low_memory=False)
     return data2019,data2020
