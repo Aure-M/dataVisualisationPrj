@@ -10,10 +10,10 @@ from prj_utils import cleanData, defineKeys, fetchData, filterFeature, yearAnaly
 df2019 = fetchData(2019)
 df2019 = cleanData(df2019)
 
-""" df2020 = fetchData(2020)
+df2020 = fetchData(2020)
 df2020 = cleanData(df2020)
 keys = defineKeys(df2020)
- """
+
 #----------------------------
 
 

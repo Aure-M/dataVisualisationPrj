@@ -16,7 +16,7 @@ links = {
 
 @st.cache(suppress_st_warning=True)
 def fetchData(year):
-    data = pd.read_csv(links[2020],low_memory=False)
+    data = pd.read_csv(links[year],low_memory=False)
     return data
 
 
