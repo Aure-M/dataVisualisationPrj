@@ -142,26 +142,29 @@ def yearAnalysis(data,selected=None,showMap=False):
 
 
 def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces):
-	st.write("# Filter feature for the year 2020")
-	limit = 300 # Limit of properties per pages
-	filtered = filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
-	page = st.select_slider(
+    st.write("# Filter feature for the year 2020")
+    limit = 300 # Limit of properties per pages
+    filtered = filter(data,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
+    distribution = filtered["type_local"].value_counts()
+    page = st.select_slider(
         'Select the page',
         options = range(int(len(data)/limit)),
         value = 0
     )
-	m = folium.Map(location=[48.856614,2.3522219]) # Paris location
-	colors = {"Maison":'lightgreen',"Appartement":'lightblue',"Dépendance":'red',"Local industriel. commercial ou assimilé":'orange'}
-	st.write(colors)
-	for ind, lat, lon, typ, val in filtered[["latitude","longitude","type_local","valeur_fonciere"]][limit*page:limit*(page+1)].itertuples():     
-		folium.Marker(
+    m = folium.Map(location=[48.856614,2.3522219]) # Paris location
+    colors = {"Maison":'lightgreen',"Appartement":'lightblue',"Dépendance":'red',"Local industriel. commercial ou assimilé":'orange'}
+
+    for t in distribution.index:
+        st.write("<font color='{}'>{}</font> : {}".format(colors[t],t,distribution[t]), unsafe_allow_html = True)
+
+    for ind, lat, lon, typ, val in filtered[["latitude","longitude","type_local","valeur_fonciere"]][limit*page:limit*(page+1)].itertuples():     
+        folium.Marker(
             [lat,lon],
             icon=folium.Icon(icon="glyphicon-map-marker",color=colors[typ]),
             tooltip = "{} €".format(val)
         ).add_to(m)
-	
-	st_data = st_folium(m, width = 800,height=600)
-	st.download_button(
+    st_data = st_folium(m, width = 800,height=600)
+    st.download_button(
         label="Download data as CSV",
         data=convert_df(filtered),
         file_name='properties.csv',
