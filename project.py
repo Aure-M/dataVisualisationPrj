@@ -83,4 +83,3 @@ elif option == '2020 analysis':
 elif option == 'Filter feature':
     filterFeature(df2020,dateMutation,natureMutation,valeurF,commune,typeLocal,surfaceT,nbrePieces)
 
-st.write("<font color='lightgreen'>THIS TEXT WILL BE RED</font>", unsafe_allow_html=True)
