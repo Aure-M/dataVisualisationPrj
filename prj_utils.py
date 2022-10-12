@@ -151,7 +151,7 @@ def filterFeature(data,dateMutation,natureMutation,valeurF,commune,typeLocal,sur
         options = range(int(len(data)/limit)),
         value = 0
     )
-    m = folium.Map(location=[48.856614,2.3522219]) # Paris location
+    m = folium.Map(location=[46.2051675,5.2255007]) # Bourg en Bresse location
     colors = {"Maison":'lightgreen',"Appartement":'lightblue',"Dépendance":'red',"Local industriel. commercial ou assimilé":'orange'}
 
     for t in distribution.index:
