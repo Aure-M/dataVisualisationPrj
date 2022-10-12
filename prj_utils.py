@@ -9,11 +9,15 @@ import plotly.express as px
 from datetime import datetime
 
 
-links = {
+""" links = {
     2020:"https://drive.google.com/u/0/uc?id=1-3aYJTGnwPDh8K0vIPXNuoGg4plRk0sb&export=download&confirm=t&uuid=f90aed2b-688d-4fa2-be31-316fbf3ee936",
     2019:"https://drive.google.com/u/0/uc?id=16B0R6ZfzpaaGpzTAl0vncB7WN5vWjz_K&export=download&confirm=t&uuid=f90aed2b-688d-4fa2-be31-316fbf3ee936"
-}
+} """
 
+links = {
+    2020:"./df2020.csv",
+    2019:"./df2019.csv"
+}
 @st.cache(suppress_st_warning=True)
 def fetchData(year):
     data2019 = pd.read_csv(links[2019],low_memory=False)
